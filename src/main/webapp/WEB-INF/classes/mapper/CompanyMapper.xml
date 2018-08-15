@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.togogo.mapper.CompanyMapper">
+
+    <select id="checkLogin" parameterType="net.togogo.bean.Company" resultType="net.togogo.bean.Company">
+        select * from tb_company where comp_email=#{compEmail} and comp_password=#{compPassword}
+    </select>
+
+    <select id="checkExist" parameterType="java.lang.String" resultType="net.togogo.bean.Company">
+        select * from tb_company where comp_email = #{email}
+    </select>
+
+    <insert id="createCompany" parameterType="net.togogo.bean.Company">
+        insert into tb_company(comp_email,comp_password,comp_name)values(#{comp_email},#{comp_password},#{comp_name})
+    </insert>
+
+    <update id="uploadCompLicense" parameterType="net.togogo.bean.Company">
+        update tb_company set comp_license=#{comp_license} where comp_id=#{comp_id}
+    </update>
+
+    <update id="uploadCompLogo" parameterType="net.togogo.bean.Company">
+        update tb_company set comp_logo=#{comp_logo} where comp_id=#{comp_id}
+    </update>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(*) from tb_company where comp_state=0
+    </select>
+
+    <select id="showCheckCompany" parameterType="net.togogo.utils.PageController" resultType="net.togogo.bean.Company">
+        select * from tb_company where comp_state=0 limit #{offset},#{pageSize}
+    </select>
+
+    <select id="get" parameterType="java.lang.Integer" resultType="net.togogo.bean.Company">
+        select * from tb_company where comp_id=#{comp_id}
+    </select>
+
+    <update id="pass" parameterType="java.lang.Integer">
+        update tb_company set comp_state=1 where comp_id=#{comp_id}
+    </update>
+
+    <select id="selectCompany" parameterType="net.togogo.bean.Company" resultType="net.togogo.bean.Company">
+        select * from tb_company
+    </select>
+</mapper>
