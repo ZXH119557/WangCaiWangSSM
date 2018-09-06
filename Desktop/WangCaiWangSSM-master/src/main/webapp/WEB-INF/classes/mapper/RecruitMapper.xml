@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.togogo.mapper.RecruitMapper">
+
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(*) from tb_recruit
+    </select>
+
+    <select id="allRecruits" parameterType="net.togogo.utils.PageController" resultType="net.togogo.bean.Recruit">
+        select * from tb_recruit limit #{offset},#{pageSize}
+    </select>
+
+    <select id="get" parameterType="java.lang.Integer" resultType="net.togogo.bean.Recruit">
+        select * from tb_recruit where recr_id=#{recruitId}
+    </select>
+
+    <select id="recommendRecruit" parameterType="java.lang.String" resultType="net.togogo.bean.Recruit">
+        call recommendRecruit(#{keyword})
+    </select>
+
+    <select id="searchRecruit" parameterType="java.lang.String" resultType="net.togogo.bean.Recruit">
+        call searchRecruit(#{keyword})
+    </select>
+
+    <select id="findUserCollection" parameterType="java.lang.Integer" resultType="net.togogo.bean.Recruit">
+      SELECT
+        tr.*
+      FROM
+        tb_user_collection tuc
+      INNER JOIN tb_recruit tr
+        ON tuc.recr_id = tr.`recr_id`
+      WHERE tuc.`user_id` = #{userId}
+    </select>
+
+</mapper>

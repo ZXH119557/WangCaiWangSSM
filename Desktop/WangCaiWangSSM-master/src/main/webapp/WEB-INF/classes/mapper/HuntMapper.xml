@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.togogo.mapper.HuntMapper">
+
+    <select id="findCount" resultType="java.lang.Integer">
+        select count(*) from tb_hunt
+    </select>
+
+    <select id="allHunts" parameterType="net.togogo.utils.PageController" resultType="net.togogo.bean.Hunt">
+        select * from tb_hunt limit #{offSet},#{pageSize}
+    </select>
+
+    <select id="get" parameterType="java.lang.Integer" resultType="net.togogo.bean.Hunt">
+        select * from tb_hunt where hunt_id=#{huntId}
+    </select>
+
+    <insert id="addHunt" parameterType="net.togogo.bean.Hunt" useGeneratedKeys="true" keyProperty="hunt_id" keyColumn="hunt_id">
+        insert into tb_hunt(user_name, user_id, hunt_job, hunt_degree, hunt_place, hunt_skill, hunt_experience, hunt_salary)values(#{user_name}, #{user_id}, #{hunt_job}, #{hunt_degree}, #{hunt_place}, #{hunt_skill}, #{hunt_experience}, #{hunt_salary})
+    </insert>
+
+    <select id="findHuntCountByUserid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from tb_hunt where user_id=#{user_id}
+    </select>
+
+    <select id="showMyHunt" parameterType="java.util.Map" resultType="net.togogo.bean.Hunt">
+        select * from tb_hunt where user_id=#{user_id} limit #{offSet},#{pageSize}
+    </select>
+
+    <select id="searchHunt" parameterType="java.lang.String" resultType="net.togogo.bean.Hunt">
+        call searchHunt(#{keyword})
+    </select>
+
+    <select id="findCompCollection" parameterType="java.lang.Integer" resultType="net.togogo.bean.Hunt">
+        SELECT
+          th.*
+        FROM
+          tb_comp_collection tcc
+          INNER JOIN tb_hunt th
+            ON tcc.`hunt_id`=th.`hunt_id`
+        WHERE tcc.`comp_id`=#{compId}
+    </select>
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.togogo.mapper.MessageMapper">
+
+    <!--<resultMap type="net.togogo.bean.User" id="BaseResultMap">
+         <result column="user_id" property="userId"/>
+         <result column="user_email" property="userEmail"/>
+         <result column="user_password" property="userPassword"/>
+         <result column="user_name" property="userName"/>
+         <result column="user_sex" property="userSex"/>
+         <result column="user_phone" property="userPhone"/>
+         <result column="user_photo" property="userPhoto"/>
+         <result column="user_birthday" property="userBirthday"/>
+         <result column="user_work_date" property="userWorkDate"/>
+         <result column="user_born_city" property="userBornCity"/>
+         <result column="user_living_city" property="userLivingCity"/>
+         <result column="user_state" property="userState"/>
+     </resultMap>-->
+
+    <select id="findUserSystemMess" parameterType="java.util.Map" resultType="net.togogo.bean.Message">
+        select * from tb_message
+        where mess_type='system' and ( send_role='all' or send_role='person' or ( send_role='only'
+        <if test="user_id != null">
+            and user_id=#{user_id}
+        </if>
+        <if test="comp_id != null">
+            and comp_id=#{comp_id}
+        </if>
+        ))
+    </select>
+
+    <select id="findUserRecommendMess" parameterType="java.util.Map" resultType="net.togogo.bean.Message">
+        select * from tb_message
+        where mess_type='recommend'
+        <if test="user_id != null">
+            and user_id=#{user_id}
+        </if>
+        <if test="comp_id != null">
+            and comp_id=#{comp_id}
+        </if>
+    </select>
+
+    <select id="findUserRecruitMess" parameterType="java.util.Map" resultType="net.togogo.bean.Message">
+        select * from tb_message where mess_type='recruit'
+        <if test="user_id != null">
+            and user_id=#{user_id}
+        </if>
+        <if test="comp_id != null">
+            and comp_id=#{comp_id}
+        </if>
+    </select>
+
+    <insert id="addMessage" parameterType="net.togogo.bean.Message">
+        insert into tb_message (mess_topic, resource, content, mess_type, send_role)values(#{mess_topic}, #{resource}, #{content}, #{mess_type}, #{send_role})
+    </insert>
+</mapper>
